@@ -13,19 +13,28 @@ const SignUp = () => {
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
-    username: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
     email: "",
     password: "",
   });
 
   const submit = async () => {
-    if (form.username === "" || form.email === "" || form.password === "") {
+    if (
+      form.firstName === "" ||
+      form.lastName === "" ||
+      form.phone === "" ||
+      form.email === "" ||
+      form.password === ""
+    ) {
       Alert.alert("Error", "Please fill in all fields");
+      return;
     }
 
     setSubmitting(true);
     try {
-      const result = await createUser(form.email, form.password, form.username);
+      const result = await createUser(form.email, form.password, `${form.firstName} ${form.lastName}`);
       setUser(result);
       setIsLogged(true);
 
@@ -57,10 +66,25 @@ const SignUp = () => {
           </Text>
 
           <FormField
-            title="Usuario"
-            value={form.username}
-            handleChangeText={(e) => setForm({ ...form, username: e })}
+            title="Nombre"
+            value={form.firstName}
+            handleChangeText={(e) => setForm({ ...form, firstName: e })}
             otherStyles="mt-10"
+          />
+
+          <FormField
+            title="Apellido"
+            value={form.lastName}
+            handleChangeText={(e) => setForm({ ...form, lastName: e })}
+            otherStyles="mt-7"
+          />
+
+          <FormField
+            title="Celular"
+            value={form.phone}
+            handleChangeText={(e) => setForm({ ...form, phone: e })}
+            otherStyles="mt-7"
+            keyboardType="phone-pad"
           />
 
           <FormField
@@ -76,6 +100,7 @@ const SignUp = () => {
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt-7"
+            secureTextEntry
           />
 
           <CustomButton
